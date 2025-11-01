@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ChevronRight, Play } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import axios from "axios";
@@ -8,23 +8,25 @@ import { baseurl } from "@/lib/utils";
 
 interface ModuleAccordionProps {
   module: any;
-  index: number;
+  index: number; 
+  courseId:number,
   handlecourseChange: React.Dispatch<React.SetStateAction<any>>;
 }
 
 export default function ModuleAccordion({
   module,
-  index,
+  index, 
+  courseId,
   handlecourseChange,
 }: ModuleAccordionProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [videomodule, setmodule] = useState(module);
+  const [videomodule, setmodule] = useState(module); 
 
   const handlemoduleCheckedChange = async (e: boolean, moduleId: number) => {
     console.log(e, "val");
     try {
       const update = await axios.patch(
-        `${baseurl}/courses/1/${moduleId}/progress`,
+        `${baseurl}/courses/${courseId}/${moduleId}/progress`,
         {
           val: e,
         }
@@ -48,7 +50,9 @@ export default function ModuleAccordion({
     } catch (error) {
       console.log(error);
     }
-  };
+  };  
+
+  
 
   const handleProgress = async (e: any, id: number) => {
     console.log(e, "video check");
@@ -57,7 +61,7 @@ export default function ModuleAccordion({
     const progress = await axios.patch(
       `${baseurl}/videos/${module.id}/${id}/complete`,
       {
-        courseId: 1,
+        courseId: courseId,
         val: e,
       }
     );
@@ -66,7 +70,9 @@ export default function ModuleAccordion({
     ...course,
     progress: progress.data.courseProgress,
   }));
-  };
+  };  
+
+   
 
   return (
     <div className="rounded-lg border border-border/50  bg-zinc-400 overflow-hidden hover:border-primary/30 transition-colors">
@@ -105,7 +111,9 @@ export default function ModuleAccordion({
             }}
           />
         </div>
-      </div>
+      </div>   
+
+      
 
       {/* Expandable Videos List */}
       {isOpen && (

@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import ModuleAccordion from "./moduleaccordion";
 import ProgressBar from "./progress";
 
+
 interface CourseCardProps {
   course: any;
   handlecourseChange: React.Dispatch<React.SetStateAction<any>>;
@@ -73,7 +74,8 @@ export default function CourseCard({
               <ModuleAccordion
                 key={index}
                 module={module}
-                index={index}
+                index={index} 
+               courseId={course.id}
                 handlecourseChange={handlecourseChange}
               />
             ))}
